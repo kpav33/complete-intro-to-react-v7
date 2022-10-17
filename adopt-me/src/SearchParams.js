@@ -1,6 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Pet from "./Pet";
 
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
+
+// Initially the input value is fixed to Seattle, WA and you can't change it
+// If you try to type into the input box, React detects that a DOM event happened, so React thinks something has changed and runs a re-render of the page, it then diffs what's currently there and what its render pass came up with, then it updates the minimum amount of DOM necessary
+// Since we read the location value from a const, right now every time we re-render the page it just reads again the same value from the const and we can't change the value in the input field
+// Two way data binding is not free in React => We have to be explicit in how we handle data, in React we use hooks
 
 const SearchParams = () => {
   //   const location = "Seattle, WA";
@@ -14,10 +20,23 @@ const SearchParams = () => {
   const [breed, setBreed] = useState("");
   const breeds = [];
 
-  // Initially the input value is fixed to Seattle, WA and you can't change it
-  // If you try to type into the input box, React detects that a DOM event happened, so React thinks something has changed and runs a re-render of the page, it then diffs what's currently there and what its render pass came up with, then it updates the minimum amount of DOM necessary
-  // Since we read the location value from a const, right now every time we re-render the page it just reads again the same value from the const and we can't change the value in the input field
-  // Two way data binding is not free in React => We have to be explicit in how we handle data, in React we use hooks
+  const [pets, setPets] = useState([]);
+
+  // useEffect allows you to say "do a render of this component first so the user can see something then as soon as the render is done, then do something (the something here being an effect).
+  // The [] at the end of the useEffect is where you declare your data dependencies. React wants to know when to run that effect again. If you leave it empty, React will assume it has to run this effect, every time any hook changes and the app is re-rendered. In this case we want it to run only once, when the component is created, so we pass an empty array as data dependancy.
+  useEffect(() => {
+    requestPets();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // We're taking advantage of closures here that if we define the requestPets function inside of the render that it will have access to that scope and can use all the hooks there
+  async function requestPets() {
+    const res = await fetch(
+      `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
+    );
+    const json = await res.json();
+
+    setPets(json.pets);
+  }
 
   return (
     // Class is a reserved word in JS, so in JSX it's replaced with className, which is the name of JS API for interacting with class names
@@ -76,6 +95,14 @@ const SearchParams = () => {
         </label>
         <button>Submit</button>
       </form>
+      {pets.map((pet) => (
+        <Pet
+          name={pet.name}
+          animal={pet.animal}
+          breed={pet.breed}
+          key={pet.id}
+        />
+      ))}
     </div>
   );
 };
