@@ -12,11 +12,14 @@
 <body>
   <div id="root">not rendered</div>
   <!-- React library => The interface of how to interact with React, the API of React, all methods except for one, come from this -->
-  <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+  <!-- Replaced with packages from npm... -->
+  <!-- <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script> -->
   <!-- The rendering layer -->
-  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+  <!-- <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script> -->
   <!-- This script must come after the the other two! -->
-  <script src="./App.js"></script>
+  <!-- <script src="./App.js"></script> -->
+  <!-- by adding type="module" Parcel know we are using the latest JS -->
+  <script type="module" src="./App.js"></script>
   <!-- <script>
     // Your code is going to go here
     // Functional component must return markup, which is what React.createElement generates!
