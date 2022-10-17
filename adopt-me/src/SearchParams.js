@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useBreedList from "./useBreedList";
-import Pet from "./Pet";
+// import Pet from "./Pet";
+import Results from "./Results";
 
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
@@ -26,6 +27,7 @@ const SearchParams = () => {
 
   // useEffect allows you to say "do a render of this component first so the user can see something then as soon as the render is done, then do something (the something here being an effect).
   // The [] at the end of the useEffect is where you declare your data dependencies. React wants to know when to run that effect again. If you leave it empty, React will assume it has to run this effect, every time any hook changes and the app is re-rendered. You can instead provide which hooks to watch for changes for. In this case we want it to run only once, when the component is created, so we pass an empty array as data dependancy.
+  // Handling async code with effects is most useful when you need to be reactive to your data changing or when you are setting up or tearing down a component
   useEffect(() => {
     requestPets();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -43,7 +45,13 @@ const SearchParams = () => {
   return (
     // Class is a reserved word in JS, so in JSX it's replaced with className, which is the name of JS API for interacting with class names
     <div className="search-params">
-      <form>
+      {/* Execute requestPets whenever someone hits enter or clicks on the submit button */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          requestPets();
+        }}
+      >
         {/* Similarly for is also a reserved word in JS, so it is replaced in label with htmlFor */}
         <label htmlFor="location">
           Location
@@ -97,14 +105,16 @@ const SearchParams = () => {
         </label>
         <button>Submit</button>
       </form>
-      {pets.map((pet) => (
+      {/* Lean towards creating smaller, reusable components when possible. Break large components into smaller pieces for greater reusability and organization. */}
+      {/* {pets.map((pet) => (
         <Pet
           name={pet.name}
           animal={pet.animal}
           breed={pet.breed}
           key={pet.id}
         />
-      ))}
+      ))} */}
+      <Results pets={pets} />;
     </div>
   );
 };
