@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import useBreedList from "./useBreedList";
 import Pet from "./Pet";
 
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
@@ -18,12 +19,13 @@ const SearchParams = () => {
   // You can use useState as many times as you need for various pieces of state. This is why ordering is important because React relies on useState to be called in strictly the same order every time so it can give you the same piece of state.
   const [animal, setAnimal] = useState("");
   const [breed, setBreed] = useState("");
-  const breeds = [];
+  //   const breeds = [];
+  const [breeds] = useBreedList(animal);
 
   const [pets, setPets] = useState([]);
 
   // useEffect allows you to say "do a render of this component first so the user can see something then as soon as the render is done, then do something (the something here being an effect).
-  // The [] at the end of the useEffect is where you declare your data dependencies. React wants to know when to run that effect again. If you leave it empty, React will assume it has to run this effect, every time any hook changes and the app is re-rendered. In this case we want it to run only once, when the component is created, so we pass an empty array as data dependancy.
+  // The [] at the end of the useEffect is where you declare your data dependencies. React wants to know when to run that effect again. If you leave it empty, React will assume it has to run this effect, every time any hook changes and the app is re-rendered. You can instead provide which hooks to watch for changes for. In this case we want it to run only once, when the component is created, so we pass an empty array as data dependancy.
   useEffect(() => {
     requestPets();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
