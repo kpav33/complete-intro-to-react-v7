@@ -1,5 +1,6 @@
-import React from "react";
-import ReactDOM from "react-dom";
+// import React from "react";
+// import ReactDOM from "react-dom";
+import { render } from "react-dom";
 import Pet from "./Pet";
 
 // When you have distinct ideas represented as markup, it's a good idea to separate that into a component
@@ -15,23 +16,39 @@ import Pet from "./Pet";
 //   ]);
 // };
 
+// const App = () => {
+//   return React.createElement("div", {}, [
+//     React.createElement("h1", {}, "Adopt Me!"),
+//     // We can reuse a component multiple times
+//     // Component accepts props from parent
+//     React.createElement(Pet, {
+//       name: "Luna",
+//       animal: "Dog",
+//       breed: "Havanese",
+//     }),
+//     React.createElement(Pet, {
+//       name: "Pepper",
+//       animal: "Bird",
+//       breed: "Cockatiel",
+//     }),
+//     React.createElement(Pet, { name: "Doink", animal: "Cat", breed: "Mix" }),
+//   ]);
+// };
+
+// ReactDOM.render(React.createElement(App), document.getElementById("root"));
+
+// With JSX
 const App = () => {
-  return React.createElement("div", {}, [
-    React.createElement("h1", {}, "Adopt Me!"),
-    // We can reuse a component multiple times
-    // Component accepts props from parent
-    React.createElement(Pet, {
-      name: "Luna",
-      animal: "Dog",
-      breed: "Havanese",
-    }),
-    React.createElement(Pet, {
-      name: "Pepper",
-      animal: "Bird",
-      breed: "Cockatiel",
-    }),
-    React.createElement(Pet, { name: "Doink", animal: "Cat", breed: "Mix" }),
-  ]);
+  return (
+    <div>
+      <h1>Adopt Me!</h1>
+      {/* React components must be capitalized, if you make it lower case, it will try to interpret pet as web component and not a React component */}
+      {/* We pass props down as we would add tags to an HTML tag */}
+      <Pet name="Luna" animal="dog" breed="Havanese" />
+      <Pet name="Pepper" animal="bird" breed="Cockatiel" />
+      <Pet name="Doink" animal="cat" breed="Mix" />
+    </div>
+  );
 };
 
-ReactDOM.render(React.createElement(App), document.getElementById("root"));
+render(<App />, document.getElementById("root"));
