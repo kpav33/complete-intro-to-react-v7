@@ -1,6 +1,7 @@
 // import React from "react";
 // import ReactDOM from "react-dom";
 import { render } from "react-dom";
+import { StrictMode } from "react";
 // import Pet from "./Pet";
 import SearchParams from "./SearchParams";
 
@@ -38,18 +39,23 @@ import SearchParams from "./SearchParams";
 
 // ReactDOM.render(React.createElement(App), document.getElementById("root"));
 
+// When in development mode your development server will automatically be compiled with an environment variable of NODE_ENV=development and in production mode, when you build the app this variable will be changed to NODE_ENV=production
+// React has a lot of debugging conveniences built into it out of the box. This conveniences get automatically removed, when you compile your code for production (this gets removed or added based on the value of the NODE_ENV enviroment variable). The dev bundle of React is bigger and slower than production build, so it is important to remove those conveniences for production build. Make sure you're compiling with the correct environmental variables or your users will suffer.
+
 // With JSX
 const App = () => {
   return (
-    <div>
-      <h1>Adopt Me!</h1>
-      {/* React components must be capitalized, if you make it lower case, it will try to interpret pet as web component and not a React component */}
-      {/* We pass props down as we would add tags to an HTML tag */}
-      {/* <Pet name="Luna" animal="dog" breed="Havanese" />
+    <StrictMode>
+      <div>
+        <h1>Adopt Me!</h1>
+        {/* React components must be capitalized, if you make it lower case, it will try to interpret pet as web component and not a React component */}
+        {/* We pass props down as we would add tags to an HTML tag */}
+        {/* <Pet name="Luna" animal="dog" breed="Havanese" />
       <Pet name="Pepper" animal="bird" breed="Cockatiel" />
       <Pet name="Doink" animal="cat" breed="Mix" /> */}
-      <SearchParams />
-    </div>
+        <SearchParams />
+      </div>
+    </StrictMode>
   );
 };
 
