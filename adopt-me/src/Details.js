@@ -5,6 +5,7 @@ import ThemeContext from "./ThemeContext";
 
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
+import Modal from "./Modal";
 
 // const Details = () => {
 //   // This is the id that is marked as variable in App.js <Route /> component and then passed to the <Link /> component in the Pet.js file
@@ -26,7 +27,7 @@ class Details extends Component {
   //     this.state = { loading: true };
   //   }
   // Use class properties to make constructor easier to read, needs Babel class properties plugin to work with Parcel!
-  state = { loading: true };
+  state = { loading: true, showModal: false };
 
   // componentDidMount is a function that is called when the first rendering is completed, similar to useEffect with an empty array as dependancy
   // There are also other lifecycle methods available
@@ -40,13 +41,15 @@ class Details extends Component {
     this.setState(Object.assign({ loading: false }, json.pets[0]));
   }
 
+  toggleModal = () => this.setState({ showModal: !this.state.showModal });
+
   // Every class component has a render method that returns some sort of JSX / markup / call to React.createElement
   render() {
     if (this.state.loading) {
       return <h2>loading … </h2>;
     }
 
-    const { animal, breed, city, state, description, name, images } =
+    const { animal, breed, city, state, description, name, images, showModal } =
       this.state;
 
     return (
@@ -59,10 +62,27 @@ class Details extends Component {
           {/* This is how you use Context inside of a class component, remeber you can't use hooks, so we are using the consumer from ThemeContext. Functionally this works the same as useContext hook in functional component */}
           <ThemeContext.Consumer>
             {([theme]) => (
-              <button style={{ backgroundColor: theme }}>Adopt {name}</button>
+              <button
+                onClick={this.toggleModal}
+                style={{ backgroundColor: theme }}
+              >
+                Adopt {name}
+              </button>
             )}
           </ThemeContext.Consumer>
-          ;<p>{description}</p>
+          <p>{description}</p>
+          {/* Notice that despite we're rendering a whole different part of the DOM we're still referencing the state in Details.js. This is the magic of Portals. You can use state but render in different parts of the DOM. Imagine a sidebar with contextual navigation. Or a contextual footer. It opens up a lot of cool possibilities. */}
+          {showModal ? (
+            <Modal>
+              <div>
+                <h1>Would you like to adopt {name}?</h1>
+                <div className="buttons">
+                  <a href="https://bit.ly/pet-adopt">Yes</a>
+                  <button onClick={this.toggleModal}>No</button>
+                </div>
+              </div>
+            </Modal>
+          ) : null}
         </div>
       </div>
     );
