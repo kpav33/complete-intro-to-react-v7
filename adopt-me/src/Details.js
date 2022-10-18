@@ -2,6 +2,7 @@ import { Component } from "react";
 import { useParams } from "react-router-dom";
 
 import Carousel from "./Carousel";
+import ErrorBoundary from "./ErrorBoundary";
 
 // const Details = () => {
 //   // This is the id that is marked as variable in App.js <Route /> component and then passed to the <Link /> component in the Pet.js file
@@ -63,7 +64,13 @@ class Details extends Component {
 // React Router's API only exposes hooks. If you have a class component that is a route, this is how you can use it, make a wrapper component that uses the hook you need, and then pass that into the component. You'll find yourself frequently making these little wrapper components for things like this.
 const WrappedDetails = () => {
   const params = useParams();
-  return <Details params={params} />;
+  return (
+    // Wrap Details component with the ErrorBoundary component
+    // This is totally self contained. No one rendering Details has to know that it has its own error boundary. Some prefer doing this in App.js or at the Router level
+    <ErrorBoundary>
+      <Details params={params} />
+    </ErrorBoundary>
+  );
 };
 
 export default WrappedDetails;
