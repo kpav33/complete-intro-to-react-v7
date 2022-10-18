@@ -1,7 +1,8 @@
 // import React from "react";
 // import ReactDOM from "react-dom";
 import { render } from "react-dom";
-import { StrictMode } from "react";
+import { StrictMode, useState } from "react";
+import ThemeContext from "./ThemeContext";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 // import Pet from "./Pet";
 import SearchParams from "./SearchParams";
@@ -46,29 +47,35 @@ import Details from "./Details";
 
 // With JSX
 const App = () => {
+  const theme = useState("darkblue");
+
   return (
-    <StrictMode>
-      <div>
-        {/* <h1>Adopt Me!</h1> */}
-        {/* React components must be capitalized, if you make it lower case, it will try to interpret pet as web component and not a React component */}
-        {/* We pass props down as we would add tags to an HTML tag */}
-        {/* <Pet name="Luna" animal="dog" breed="Havanese" />
+    // You have to wrap your app in a Provider. This is the mechanism by which React will notify the higher components to re-render whenever our context changes. Then whatever you pass into the value prop (we passed in the complete hook, the value and updated pair) will exit on the other side whenever we ask for it.
+    // Note that the theme will only be available inside of this provider. So if we only wrapped the <Details> route with the Provider, that context would not be available inside of <SearchParams />.
+    <ThemeContext.Provider value={theme}>
+      <StrictMode>
+        <div>
+          {/* <h1>Adopt Me!</h1> */}
+          {/* React components must be capitalized, if you make it lower case, it will try to interpret pet as web component and not a React component */}
+          {/* We pass props down as we would add tags to an HTML tag */}
+          {/* <Pet name="Luna" animal="dog" breed="Havanese" />
       <Pet name="Pepper" animal="bird" breed="Cockatiel" />
       <Pet name="Doink" animal="cat" breed="Mix" /> */}
-        {/* <SearchParams /> */}
-        {/* Add React Route v6 for routing */}
-        <BrowserRouter>
-          <header>
-            <Link to="/">Adopt Me!</Link>
-          </header>
-          <Routes>
-            {/* :id is a variable that we can get from params */}
-            <Route path="/details/:id" element={<Details />} />
-            <Route path="/" element={<SearchParams />} />
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </StrictMode>
+          {/* <SearchParams /> */}
+          {/* Add React Route v6 for routing */}
+          <BrowserRouter>
+            <header>
+              <Link to="/">Adopt Me!</Link>
+            </header>
+            <Routes>
+              {/* :id is a variable that we can get from params */}
+              <Route path="/details/:id" element={<Details />} />
+              <Route path="/" element={<SearchParams />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </StrictMode>
+    </ThemeContext.Provider>
   );
 };
 

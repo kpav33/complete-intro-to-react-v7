@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import ThemeContext from "./ThemeContext";
 import useBreedList from "./useBreedList";
 // import Pet from "./Pet";
 import Results from "./Results";
@@ -11,6 +12,9 @@ const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 // Two way data binding is not free in React => We have to be explicit in how we handle data, in React we use hooks
 
 const SearchParams = () => {
+  // useContext is how you get the context data out of a given context (you can have lots of various types of context in a given app)
+  const [theme, setTheme] = useContext(ThemeContext);
+
   //   const location = "Seattle, WA";
   // This is a hook => Called a hook, because it gets "caught" every time the render function gets called. Because the hooks get called in the same order every single time, they will always point to the same piece of state. This means they can be stateful. You can keep mutable state in hooks that you can modify later.
   // Hooks rely on strict ordering. Do not put hooks inside if statements or loops!
@@ -103,7 +107,20 @@ const SearchParams = () => {
             ))}
           </select>
         </label>
-        <button>Submit</button>
+        <label htmlFor="theme">
+          Theme
+          <select
+            value={theme}
+            onChange={(e) => setTheme(e.target.value)}
+            onBlur={(e) => setTheme(e.target.value)}
+          >
+            <option value="peru">Peru</option>
+            <option value="darkblue">Dark Blue</option>
+            <option value="chartreuse">Chartreuse</option>
+            <option value="mediumorchid">Medium Orchid</option>
+          </select>
+        </label>
+        ;<button style={{ backgroundColor: theme }}>Submit</button>
       </form>
       {/* Lean towards creating smaller, reusable components when possible. Break large components into smaller pieces for greater reusability and organization. */}
       {/* {pets.map((pet) => (

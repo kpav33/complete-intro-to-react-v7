@@ -1,6 +1,8 @@
 import { Component } from "react";
 import { useParams } from "react-router-dom";
 
+import ThemeContext from "./ThemeContext";
+
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
 
@@ -53,8 +55,14 @@ class Details extends Component {
         <div>
           <h1>{name}</h1>
           <h2>{`${animal} — ${breed} — ${city}, ${state}`}</h2>
-          <button>Adopt {name}</button>
-          <p>{description}</p>
+          {/* <button>Adopt {name}</button> */}
+          {/* This is how you use Context inside of a class component, remeber you can't use hooks, so we are using the consumer from ThemeContext. Functionally this works the same as useContext hook in functional component */}
+          <ThemeContext.Consumer>
+            {([theme]) => (
+              <button style={{ backgroundColor: theme }}>Adopt {name}</button>
+            )}
+          </ThemeContext.Consumer>
+          ;<p>{description}</p>
         </div>
       </div>
     );
