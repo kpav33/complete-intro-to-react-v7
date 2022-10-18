@@ -1,4 +1,5 @@
 // import React from "react";
+import { Link } from "react-router-dom";
 
 // export default function Pet({ name, animal, breed }) {
 //   return React.createElement("div", {}, [
@@ -28,7 +29,8 @@ const Pet = (props) => {
   // );
 
   return (
-    <a href={`/details/${id}`} className="pet">
+    // Changed a element to Link, because if we used a then every link you clicked would end up in the browser navigating to a whole new page which means React would totally reload your entire app all over again. With <Link> it can intercept this and just handle that all client-side. Much faster and a better user experience.
+    <Link to={`/details/${id}`} className="pet">
       <div className="image-container">
         <img src={hero} alt={name} />
       </div>
@@ -36,7 +38,7 @@ const Pet = (props) => {
         <h1>{name}</h1>
         <h2>{`${animal} — ${breed} — ${location}`}</h2>
       </div>
-    </a>
+    </Link>
   );
 };
 

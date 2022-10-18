@@ -2,8 +2,10 @@
 // import ReactDOM from "react-dom";
 import { render } from "react-dom";
 import { StrictMode } from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 // import Pet from "./Pet";
 import SearchParams from "./SearchParams";
+import Details from "./Details";
 
 // When you have distinct ideas represented as markup, it's a good idea to separate that into a component
 // const Pet = (props) => {
@@ -47,13 +49,24 @@ const App = () => {
   return (
     <StrictMode>
       <div>
-        <h1>Adopt Me!</h1>
+        {/* <h1>Adopt Me!</h1> */}
         {/* React components must be capitalized, if you make it lower case, it will try to interpret pet as web component and not a React component */}
         {/* We pass props down as we would add tags to an HTML tag */}
         {/* <Pet name="Luna" animal="dog" breed="Havanese" />
       <Pet name="Pepper" animal="bird" breed="Cockatiel" />
       <Pet name="Doink" animal="cat" breed="Mix" /> */}
-        <SearchParams />
+        {/* <SearchParams /> */}
+        {/* Add React Route v6 for routing */}
+        <BrowserRouter>
+          <header>
+            <Link to="/">Adopt Me!</Link>
+          </header>
+          <Routes>
+            {/* :id is a variable that we can get from params */}
+            <Route path="/details/:id" element={<Details />} />
+            <Route path="/" element={<SearchParams />} />
+          </Routes>
+        </BrowserRouter>
       </div>
     </StrictMode>
   );
