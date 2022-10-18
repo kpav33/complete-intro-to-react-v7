@@ -15,11 +15,13 @@ import { useParams } from "react-router-dom";
 // Every class component extends React.Component
 class Details extends Component {
   // Not every component needs a constructor, we need it here to store some state
-  constructor() {
-    // If you have a constructor, you have to do the super(props) to make sure that the props are passed up to React so React can keep track of them
-    super();
-    this.state = { loading: true };
-  }
+  //   constructor() {
+  //     // If you have a constructor, you have to do the super(props) to make sure that the props are passed up to React so React can keep track of them
+  //     super();
+  //     this.state = { loading: true };
+  //   }
+  // Use class properties to make constructor easier to read, needs Babel class properties plugin to work with Parcel!
+  state = { loading: true };
 
   // componentDidMount is a function that is called when the first rendering is completed, similar to useEffect with an empty array as dependancy
   // There are also other lifecycle methods available
