@@ -54,7 +54,13 @@ const App = () => {
     // Note that the theme will only be available inside of this provider. So if we only wrapped the <Details> route with the Provider, that context would not be available inside of <SearchParams />.
     <ThemeContext.Provider value={theme}>
       <StrictMode>
-        <div>
+        <div
+          className="p-0 m-0"
+          style={{
+            background:
+              "url(http://pets-images.dev-apis.com/pets/wallpaperA.jpg)",
+          }}
+        >
           {/* <h1>Adopt Me!</h1> */}
           {/* React components must be capitalized, if you make it lower case, it will try to interpret pet as web component and not a React component */}
           {/* We pass props down as we would add tags to an HTML tag */}
@@ -64,8 +70,10 @@ const App = () => {
           {/* <SearchParams /> */}
           {/* Add React Route v6 for routing */}
           <BrowserRouter>
-            <header>
-              <Link to="/">Adopt Me!</Link>
+            <header className="w-full mb-10 text-center p-7 bg-gradient-to-b from-purple-400 via-pink-500 to-red-500">
+              <Link className="text-6xl text-white hover:text-gray-200" to="/">
+                Adopt Me!
+              </Link>
             </header>
             <Routes>
               {/* :id is a variable that we can get from params */}

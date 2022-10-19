@@ -48,9 +48,11 @@ const SearchParams = () => {
 
   return (
     // Class is a reserved word in JS, so in JSX it's replaced with className, which is the name of JS API for interacting with class names
-    <div className="search-params">
+    // <div className="search-params">
+    <div className="my-0 mx-auto w-11/12">
       {/* Execute requestPets whenever someone hits enter or clicks on the submit button */}
       <form
+        className="p-10 mb-10 rounded-lg bg-gray-200 shadow-lg flex flex-col justify-center items-center"
         onSubmit={(e) => {
           e.preventDefault();
           requestPets();
@@ -65,6 +67,8 @@ const SearchParams = () => {
             value={location}
             placeholder="Location"
             onChange={(e) => setLocation(e.target.value)}
+            type="text"
+            className="w-60 mb-5 block"
           />
         </label>
         <label htmlFor="animal">
@@ -81,6 +85,7 @@ const SearchParams = () => {
               setAnimal(e.target.value);
               setBreed("");
             }}
+            className="w-60 mb-5 block"
           >
             <option />
             {ANIMALS.map((animal) => (
@@ -98,6 +103,7 @@ const SearchParams = () => {
             value={breed}
             onChange={(e) => setBreed(e.target.value)}
             onBlur={(e) => setBreed(e.target.value)}
+            className="w-60 mb-5 block disabled:opacity-50"
           >
             <option />
             {breeds.map((breed) => (
@@ -113,6 +119,7 @@ const SearchParams = () => {
             value={theme}
             onChange={(e) => setTheme(e.target.value)}
             onBlur={(e) => setTheme(e.target.value)}
+            className="w-60 mb-5 block"
           >
             <option value="peru">Peru</option>
             <option value="darkblue">Dark Blue</option>
@@ -120,7 +127,12 @@ const SearchParams = () => {
             <option value="mediumorchid">Medium Orchid</option>
           </select>
         </label>
-        <button style={{ backgroundColor: theme }}>Submit</button>
+        <button
+          className="rounded px-6 py-2 color text-white hover:opacity-50 border-none"
+          style={{ backgroundColor: theme }}
+        >
+          Submit
+        </button>
       </form>
       {/* Lean towards creating smaller, reusable components when possible. Break large components into smaller pieces for greater reusability and organization. */}
       {/* {pets.map((pet) => (
