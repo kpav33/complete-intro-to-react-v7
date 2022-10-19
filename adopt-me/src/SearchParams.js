@@ -120,7 +120,7 @@ const SearchParams = () => {
             <option value="mediumorchid">Medium Orchid</option>
           </select>
         </label>
-        ;<button style={{ backgroundColor: theme }}>Submit</button>
+        <button style={{ backgroundColor: theme }}>Submit</button>
       </form>
       {/* Lean towards creating smaller, reusable components when possible. Break large components into smaller pieces for greater reusability and organization. */}
       {/* {pets.map((pet) => (
