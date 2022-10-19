@@ -310,3 +310,173 @@ const CallbackComponent = () => {
 
 export default CallbackComponent;
 ```
+
+## useLayoutEffect
+
+*useLayoutEffect* is almost the same as *useEffect* except that it's synchronous to render as opposed to scheduled like *useEffect* is. If you're migrating from a class component to a hooks-using function component, this can be helpful too because useLayout runs at the same time as *componentDidMount* and componentDidUpdate* whereas *useEffect* is scheduled after. This should be a temporary fix.
+
+The only time you should be using *useLayoutEffect* is to measure DOM nodes for things like animations. In the example, we measure the textarea after every time you click on it (the onClick is to force a re-render.) This means you're running render twice but it's also necessary to be able to capture the correct measurements.
+
+```js
+import { useState, useLayoutEffect, useRef } from "react";
+
+const LayoutEffectComponent = () => {
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+  const el = useRef();
+
+  useLayoutEffect(() => {
+    setWidth(el.current.clientWidth);
+    setHeight(el.current.clientHeight);
+  });
+
+  return (
+    <div>
+      <h1>useLayoutEffect Example</h1>
+      <h2>textarea width: {width}px</h2>
+      <h2>textarea height: {height}px</h2>
+      <textarea
+        onClick={() => {
+          setWidth(0);
+        }}
+        ref={el}
+      />
+    </div>
+  );
+};
+
+export default LayoutEffectComponent;
+```
+
+## useImperativeHandle
+
+In the example below, whenever you have an invalid form, it will immediately focus the the first field that's invalid. If you look at the code, ElaborateInput is a child element so the parent component shouldn't have any access to the input contained inside the component. Those components are black boxes to their parents. All they can do is pass in props. So how do we accomplish it then?
+
+The first thing we use is useImperativeHandle. This allows us to customize methods on an object that is made available to the parents via the useRef API. Inside ElaborateInput we have two refs: one that is the one that will be provided by the parent, forwarded through by wrapping the ElaborateInput component in a forwardRef call which will then provide that second ref parameter in the function call, and then the inputRef which is being used to directly access the DOM so we can call focus on the DOM node directly.
+
+From the parent, we assign via useRef a ref to each of the ElaborateInputs which is then forwarded on each on via the forwardRef. Now, on these refs inside the parent component we have those methods that we made inside the child so we can call them when we need to. In this case, we'll calling the focus when the parent knows that the child has an error.
+
+Again, you probably won't use this directly but it's good to know it exists. Normally it's better to not use this hook and try to accomplish the same thing via props, but sometimes it may be useful to break this one out.
+
+```js
+import { useState, useRef, useImperativeHandle, forwardRef } from "react";
+
+const ElaborateInput = forwardRef(
+  ({ hasError, placeholder, value, update }, ref) => {
+    const inputRef = useRef();
+    useImperativeHandle(ref, () => {
+      return {
+        focus() {
+          inputRef.current.focus();
+        }
+      };
+    });
+    return (
+      <input
+        ref={inputRef}
+        value={value}
+        onChange={(e) => update(e.target.value)}
+        placeholder={placeholder}
+        style={{
+          padding: "5px 15px",
+          borderWidth: "3px",
+          borderStyle: "solid",
+          borderColor: hasError ? "crimson" : "#999",
+          borderRadius: "5px",
+          margin: "0 10px",
+          textAlign: "center"
+        }}
+      />
+    );
+  }
+);
+
+const ImperativeHandleComponent = () => {
+  const [city, setCity] = useState("Seattle");
+  const [state, setState] = useState("WA");
+  const [error, setError] = useState("");
+  const cityEl = useRef();
+  const stateEl = useRef();
+
+  function validate() {
+    // lol I found it on StackOverflow : https://stackoverflow.com/a/25677072
+    if (
+      !/^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]+$/.test(
+        city
+      )
+    ) {
+      setError("city");
+      cityEl.current.focus();
+      return;
+    }
+
+    if (!/^[A-Z]{2}$/.test(state)) {
+      setError("state");
+      stateEl.current.focus();
+      return;
+    }
+
+    setError("");
+    alert("valid form!");
+  }
+
+  return (
+    <div>
+      <h1>useImperativeHandle Example</h1>
+      <ElaborateInput
+        hasError={error === "city"}
+        placeholder={"City"}
+        value={city}
+        update={setCity}
+        ref={cityEl}
+      />
+      <ElaborateInput
+        hasError={error === "state"}
+        placeholder={"State"}
+        value={state}
+        update={setState}
+        ref={stateEl}
+      />
+      <button onClick={validate}>Validate Form</button>
+    </div>
+  );
+};
+
+export default ImperativeHandleComponent;
+```
+
+## useDebugValue
+
+*useDebugValue* allows you to surface information from your custom hook into the dev tools. This allows the developer who is consuming your hook (possibly you, possibly your coworker) to have whatever debugging information you choose to surfaced to them. If you're consuming a library that has hooks (like how react-router-dom has hooks) these can be useful hints to developers.
+
+```js
+import { useState, useEffect, useDebugValue } from "react";
+
+const useIsRaining = () => {
+  const [isRaining, setIsRaining] = useState(false);
+
+  useEffect(() => {
+    // pretend here you'd make an API request to a weather API
+    // instead we're just going to fake it
+
+    setIsRaining(Math.random() > 0.5);
+  }, []);
+
+  useDebugValue(isRaining ? "Is Raining" : "Is Not Raining");
+
+  return isRaining;
+};
+
+const DebugValueComponent = () => {
+  const isRaining = useIsRaining();
+
+  return (
+    <div>
+      <h1>useDebugValue Example</h1>
+      <h2>Do you need a coat today? {isRaining ? "yes" : "maybe"}</h2>
+    </div>
+  );
+};
+
+export default DebugValueComponent;
+```
