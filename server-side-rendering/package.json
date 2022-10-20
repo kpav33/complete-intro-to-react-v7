@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "parcel src/index.html",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
-    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet"
+    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
+    "build": "parcel build",
+    "start": "npm -s run build && node dist/backend/index.js"
   },
   "author": "Brian Holt <btholt+citr-v7-project@gmail.com>",
   "license": "Apache-2.0",
@@ -29,5 +31,19 @@
   },
   "browserslist": [
     "last 2 Chrome versions"
-  ]
+  ],
+  "targets": {
+    "frontend": {
+      "source": ["src/index.html"],
+      "publicUrl": "/frontend"
+    },
+    "backend": {
+      "source": "server/index.js",
+      "optimize": false,
+      "context": "node",
+      "engines": {
+        "node": ">=16"
+      }
+    }
+  }
 }
