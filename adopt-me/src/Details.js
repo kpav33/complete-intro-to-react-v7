@@ -1,11 +1,11 @@
-import { Component } from "react";
+import { Component, lazy } from "react";
 import { useParams } from "react-router-dom";
 
 import ThemeContext from "./ThemeContext";
 
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
-import Modal from "./Modal";
+// import Modal from "./Modal";
 
 // const Details = () => {
 //   // This is the id that is marked as variable in App.js <Route /> component and then passed to the <Link /> component in the Pet.js file
@@ -16,6 +16,10 @@ import Modal from "./Modal";
 // };
 
 // export default Details;
+
+// Load modal async, this way this component will load async
+// We didn't have to use <Suspense /> again, because we already have a suspense component at the top of the app
+const Modal = lazy(() => import("./Modal"));
 
 // Example with class components
 // Every class component extends React.Component
