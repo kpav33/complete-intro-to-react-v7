@@ -30,11 +30,13 @@ const Pet = (props) => {
 
   return (
     // Changed a element to Link, because if we used a then every link you clicked would end up in the browser navigating to a whole new page which means React would totally reload your entire app all over again. With <Link> it can intercept this and just handle that all client-side. Much faster and a better user experience.
-    <Link to={`/details/${id}`} className="pet">
+    // <Link to={`/details/${id}`} className="pet">
+    <Link to={`/details/${id}`} className="relative block">
       <div className="image-container">
         <img src={hero} alt={name} />
       </div>
-      <div className="info">
+      {/* <div className="info"> */}
+      <div className="absolute bottom-0 left-0 bg-gradient-to-tr from-white to-transparent pr-2 pt-2">
         <h1>{name}</h1>
         <h2>{`${animal} — ${breed} — ${location}`}</h2>
       </div>
