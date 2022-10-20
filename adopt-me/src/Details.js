@@ -53,11 +53,14 @@ class Details extends Component {
       this.state;
 
     return (
-      <div className="details">
+      // <div className="details">
+      <div className="w-[95%] mx-auto my-0 p-4 mb-6 rounded-lg bg-[#faeff0] shadow-lg">
         <Carousel images={images} />
         <div>
-          <h1>{name}</h1>
-          <h2>{`${animal} — ${breed} — ${city}, ${state}`}</h2>
+          {/* <h1>{name}</h1> */}
+          <h1 className="text-center text-[#333] text-6xl my-1.5">{name}</h1>
+          {/* <h2>{`${animal} — ${breed} — ${city}, ${state}`}</h2> */}
+          <h2 className="text-center ml-1.5 mt-0 mr-5 mb-0">{`${animal} — ${breed} — ${city}, ${state}`}</h2>
           {/* <button>Adopt {name}</button> */}
           {/* This is how you use Context inside of a class component, remeber you can't use hooks, so we are using the consumer from ThemeContext. Functionally this works the same as useContext hook in functional component */}
           <ThemeContext.Consumer>
@@ -65,12 +68,15 @@ class Details extends Component {
               <button
                 onClick={this.toggleModal}
                 style={{ backgroundColor: theme }}
+                className="px-6 py-1 text-white text-large border border-[#333] rounded-md block my-2.5 mx-auto cursor-pointer"
               >
                 Adopt {name}
               </button>
             )}
           </ThemeContext.Consumer>
-          <p>{description}</p>
+          {/* <p>{description}</p>
+           */}
+          <p className="leading-6 px-5 py-0">{description}</p>
           {/* Notice that despite we're rendering a whole different part of the DOM we're still referencing the state in Details.js. This is the magic of Portals. You can use state but render in different parts of the DOM. Imagine a sidebar with contextual navigation. Or a contextual footer. It opens up a lot of cool possibilities. */}
           {showModal ? (
             <Modal>

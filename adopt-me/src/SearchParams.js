@@ -143,7 +143,7 @@ const SearchParams = () => {
           key={pet.id}
         />
       ))} */}
-      <Results pets={pets} />;
+      <Results pets={pets} />
     </div>
   );
 };
