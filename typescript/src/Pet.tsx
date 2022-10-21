@@ -1,6 +1,17 @@
+import { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 
-const Pet = (props) => {
+interface IProps {
+  name: string;
+  animal: string;
+  breed: string;
+  images: string[];
+  location: string;
+  id: number;
+}
+
+// Here we're telling TS that Pet is a Function Component for React and that it fits all the shapes of a React component.
+const Pet: FunctionComponent<IProps> = (props) => {
   const { name, animal, breed, images, location, id } = props;
 
   let hero = "http://pets-images.dev-apis.com/pets/none.jpg";
