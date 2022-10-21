@@ -1,15 +1,17 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, FunctionComponent } from "react";
 import Results from "./Results";
 import useBreedList from "./useBreedList";
 import ThemeContext from "./ThemeContext";
 
-const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
+import { PetAPIResponse, Animal, Pet } from "./APIResponsesTypes";
 
-const SearchParams = () => {
+const ANIMALS: Animal[] = ["bird", "cat", "dog", "rabbit", "reptile"];
+
+const SearchParams: FunctionComponent = () => {
   const [location, updateLocation] = useState("");
-  const [animal, updateAnimal] = useState("");
+  const [animal, updateAnimal] = useState("" as Animal);
   const [breed, updateBreed] = useState("");
-  const [pets, setPets] = useState([]);
+  const [pets, setPets] = useState([] as Pet[]);
   const [breeds] = useBreedList(animal);
   const [theme, setTheme] = useContext(ThemeContext);
 
@@ -21,7 +23,7 @@ const SearchParams = () => {
     const res = await fetch(
       `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
     );
-    const json = await res.json();
+    const json = (await res.json()) as PetAPIResponse;
 
     setPets(json.pets);
   }
@@ -49,11 +51,12 @@ const SearchParams = () => {
             id="animal"
             value={animal}
             onChange={(e) => {
-              updateAnimal(e.target.value);
+              // Occasionally you need to give TypeScript a hint to what it's going to get. That's what as for: you're saying I'm sure it's going to be this.
+              updateAnimal(e.target.value as Animal);
               updateBreed("");
             }}
             onBlur={(e) => {
-              updateAnimal(e.target.value);
+              updateAnimal(e.target.value as Animal);
               updateBreed("");
             }}
           >
