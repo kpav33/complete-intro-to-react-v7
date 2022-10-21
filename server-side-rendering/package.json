@@ -25,6 +25,7 @@
     "process": "^0.11.10"
   },
   "dependencies": {
+    "express": "^4.18.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-router-dom": "^6.2.1"
@@ -34,7 +35,9 @@
   ],
   "targets": {
     "frontend": {
-      "source": ["src/index.html"],
+      "source": [
+        "src/index.html"
+      ],
       "publicUrl": "/frontend"
     },
     "backend": {
