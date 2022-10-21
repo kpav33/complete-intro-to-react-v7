@@ -5,18 +5,33 @@ import ErrorBoundary from "./ErrorBoundary";
 import ThemeContext from "./ThemeContext";
 import Modal from "./Modal";
 
-class Details extends Component {
-  state = { loading: true, showModal: false };
+import { PetAPIResponse, Animal } from "./APIResponsesTypes";
+
+// We need to tell TypeScript what props each component expects. Now when you import that component elsewhere, TS will make sure the consumer passes all the right props in.
+class Details extends Component<{ params: { id?: string } }> {
+  // We have to give all state a default setting. This prevents errors on the initial render and it gives TypeScript the ability to infer all your types.
+  state = {
+    loading: true,
+    showModal: false,
+    animal: "" as Animal,
+    breed: "",
+    city: "",
+    state: "",
+    description: "",
+    name: "",
+    images: [] as string[],
+  };
 
   async componentDidMount() {
     const res = await fetch(
       `http://pets-v2.dev-apis.com/pets?id=${this.props.params.id}`
     );
-    const json = await res.json();
+    const json = (await res.json()) as PetAPIResponse;
     this.setState(Object.assign({ loading: false }, json.pets[0]));
   }
   toggleModal = () => this.setState({ showModal: !this.state.showModal });
-  adopt = () => (window.location = "http://bit.ly/pet-adopt");
+  // We had to add .href to the end of location. Technically that API expect a Location object but it just works with a string. With TS we need to be a bit more adherent to the spec so we'll do it the correct by setting .href.
+  adopt = () => (window.location.href = "http://bit.ly/pet-adopt");
   render() {
     if (this.state.loading) {
       return <h2>loading … </h2>;
@@ -60,7 +75,7 @@ class Details extends Component {
 }
 
 const WrappedDetails = () => {
-  const params = useParams();
+  const params = useParams<{ id: string }>();
   return (
     <ErrorBoundary>
       <Details params={params} />
